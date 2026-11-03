@@ -8,11 +8,13 @@ To formalize the question, two vectors are facing the opposite direction when th
 
 ## 2. Methodology
 
-To get the approximate distribution of the cosine similarities per layers, there are a few steps.
+To get the approximate distribution of the cosine similarities per layer, there are a few steps.
 
 1. **Concept Vector Extraction.** I extract the last-token hidden state at every layer for each sentence in a concept's set. After that, a concept vector can be calculated as the average of the concept's hidden state minus the average of the neutral's hidden state, per layer. By subtracting the neutral means, it allows the removal of most shared state between sentences such as the '.' as the very last character of each sentence and the word "the" shared across many of the sentences.
 2. **Cosine Similarity Computation.** After the concept vectors are obtained, I compute the cosine similarity between bright vs dark concept vectors, as well as hot vs cold concept vectors as a control pair, per layer. I also compute the average of the cosine similarity across 4 unrelated pairings (bright-hot, bright-cold, dark-hot, dark-cold) to establish a baseline; to check how similar two unrelated concepts are.
 3. **Finding The ~95% Bootstrap Interval.** To do it, I resample the 40 matched rows with replacement and recompute all concept vectors and the three cosine curves in this new sample. I resample it for 5,000 times and use the 2.5th percentile as the lower bound and the 97.5th percentile as the upper bound for the interval. For reproducibility purpose, I fixed the seed using `torch.manual_seed(42)` at the start of the bootstrap code block.
+
+After getting the distribution of the cosine similarities per layer, next step is to analyze the curve gap between the three cosine curves.
 
 ## 3. Results
 
