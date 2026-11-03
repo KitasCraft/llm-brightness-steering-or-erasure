@@ -20,9 +20,11 @@ To get the approximate distribution of the cosine similarities per layer, there 
 
 After getting the distribution of the cosine similarities per layer, next step is to analyze the curve comparisons between the three cosine curves which are bright-dark, hot-cold, and the baseline, averaged from the unrelated pairings.
 
-For hot-cold curve compared with the other curves: First, I calculate the mean cosine similarity across the layers from layer 2 to layer 23 for each bootstrapped curve. Then, I calculate the list of differences between the different possible pairings of 5,000 bootstrapped mean cosine similarity of each cosine curve. Finally, I use the 2.5th percentile and 97.5th percentile of that list to get the 95% interval of the difference between hot-cold curve and the other curve across layer 2 to 23. (See Layer Choice for details)
+For hot-cold curve compared with the other curves: First, I calculate the mean cosine similarity across the layers from layer 2 to layer 23 for each bootstrapped curve. Then, I calculate the list of differences between all 5,000 bootstrapped mean cosine similarity of each cosine curve from the same bootstrapped sample. Finally, I use the 2.5th percentile and 97.5th percentile of that list to get the 95% interval of the difference between hot-cold curve and the other curve across layer 2 to 23 (See Layer Choice for details).
 
-For bright-dark curve compared with the baseline curve: Similar as the above, but instead of using the mean cosine similarity across layers, I keep each layer's cosine similarity and then plotted the 95% bootstrap interval of the difference between bright-dark curve and baseline curve for each layer.
+For bright-dark curve compared with the baseline curve: Similar as the above, but instead of using the mean cosine similarity across layers, I keep each layer's cosine similarity and then plot the 95% bootstrap interval of the difference between bright-dark curve and baseline curve for each layer. Since negative differences can cancel an average, per-layer summary is better for this comparison as to observe how the difference changes per layer.
+
+The reason I use average instead of per-layer for hot-cold curve comparison is because most of the layers have hot-cold cosine similarity interval above both bright-dark and the baseline cosine similarity intervals (See Robustness and Sanity Checks section in the notebook for detail). Thus, the statistic of the average is much preferred as most layers have the same signs in terms of difference.
 
 ### Layer Choice
 
@@ -38,4 +40,4 @@ The analysis was also repeated over the original 40 sentences as well as the ori
 
 pretend that the plot is here
 
-All of the bootstrapped hot-cold average cosine similarities are above all of bootstrapped bright-dark average cosine similarities as well as all of bootstrapped baseline average cosine similarities, with [0.098, 0.229] as the 95% interval of cosine difference between hot-cold and bright-dark and [0.140, 0.235] as the 95% interval of cosine difference between hot-cold and the unrelated baseline.
+In every bootstrapped sample, the averaged hot-cold cosine similarity is above the averaged bright-dark cosine similarities as well as averaged baseline cosine similarities, with [0.098, 0.229] as the 95% interval of cosine difference between hot-cold and bright-dark and [0.140, 0.235] as the 95% interval of cosine difference between hot-cold and the unrelated baseline.
