@@ -1,11 +1,19 @@
-# Can a model still understand concept of brightness without knowing 'bright' or 'dark'?
-One common meaning of 'bright' is "filled with much light," while one common meaning of 'dark' is "being without light or without much light," so it seems that both have the opposite meaning. But, does a language model also encode the meaning this way? Furthermore, what happens to its understanding of brightness if the activations for 'bright' or 'dark' are stripped away from the model?
+# Are 'bright' and 'dark', two opposite concepts, stored the opposite way inside a language model?
+One common meaning of 'bright' is "filled with much light," while one common meaning of 'dark' is "being without light or without much light," so it seems that both have the opposite meaning. But, does a language model also encode the meaning this way by encoding the vectors in the opposite direction?
 
 ## 1. Setup
-I used Qwen2.5-0.5B-Instruct as the candidate model for this experiment, with float32 as its activations' data type. The prompts used to extract the specific activation vectors are 40 matched sentences, each for the corresponding concept of 'bright', 'dark', neutral, 'hot', and 'cold'. Same subject per row; and the neutral set has boring properties to mirror the neutral concept. A “cleaned” variant is also generated and used to remove connotations and sun/winter cross-leaks between brightness and temperature sets. All sentences are drafted with AI help and reviewed by hand.
+I used Qwen2.5-0.5B-Instruct as the model for this experiment, with float32 as its activations' data type. The prompts used to extract the specific activation vectors are 40 matched sentences, each for the corresponding concept of 'bright', 'dark', neutral, 'hot', and 'cold'. Same subject per row; and the neutral set has boring properties such as size and object existence as a concept set unrelated to brightness or temperature. A "cleaned" variant is also generated and the main prompt set used to remove connotations and sun/winter cross-leaks between brightness and temperature sets, while the original variant is used as robustness check. All sentences are drafted with AI help and reviewed by hand.
 
-## 2. Model Exploration
+To formalize the question, two vectors are facing the opposite direction when their cosine similarity is -1. Thus, the goal of this small project is to determine whether the cosine similarities of 'bright' vector and 'dark' vector is -1
 
-To extract the specific activation vector for a concept, there are a few steps. First, I extract the last-token hidden state at every layer based from the sentences inside the concept as inputs. After each concept has been extracted, the concept vector for each non-neutral concept is equal to the average of the extracted concept token subtracted by the average of the extracted neutral set token, per layer. Second, I compute the mean cosine similarity between bright vs dark and hot vs cold as to examine the control variable. I also compute the average of the cosine similarity across 4 unrelated pairings (bright/dark vs hot/cold) to establish baseline. I also compute all three cosine similarity within 5000 bootstrapped samples and a fixed seed to establish a 95% confidence area for each layer.
+## 2. Methodology
 
-After plotting each layer's mean cosine similarity with the established 95% confidence interval, I've noted that 
+To get the approximate distribution of the cosine similarities per layers, there are a few steps.
+
+1. **Concept Vector Extraction.** I extract the last-token hidden state at every layer for each sentence in a concept's set. After that, a concept vector can be calculated as the average of the concept's hidden state subtracted by the average of the neutral's hidden state, per layer. By subtracting the neutral means, it allows the removal of most shared state between sentences such as the '.' as the very last character of each sentence and the word "the" shared across many of the sentences.
+2. **Cosine Similarity Computation.** After the concept vectors are obtained, I compute the cosine similarity between bright vs dark concept vectors, as well as hot vs cold concept vectors as a control pair, per layer. I also compute the average of the cosine similarity across 4 unrelated pairings (bright-hot, bright-cold, dark-hot, dark-cold) to establish a baseline; to check how similar other two opposite concepts are.
+3. **Finding The ~95% Distribution.** I compute the 95% bootstrap interval. To do it, I resample the 40 matched rows with replacement and recompute all concept vectors and the three cosine curves in this new sample. I resample it for 5,000 times and use the 2.5 percentile as the lower bound and the 97.5 percentile as the upper bound for the interval. For reproducibility purpose, I fixed the seed using `torch.manual_seed(42)` at the start of the bootstrap code block.
+
+## 3. Results
+
+pretend that the plot is here
