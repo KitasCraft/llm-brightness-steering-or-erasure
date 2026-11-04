@@ -40,4 +40,22 @@ The analysis was also repeated over the original 40 sentences as well as the ori
 
 pretend that the plot is here
 
-In every bootstrapped sample, the averaged hot-cold cosine similarity is above the averaged bright-dark cosine similarities as well as averaged baseline cosine similarities, with [0.098, 0.229] as the 95% interval of cosine difference between hot-cold and bright-dark and [0.140, 0.235] as the 95% interval of cosine difference between hot-cold and the unrelated baseline.
+We can see that from this plot that, the cosine similarity between bright concept and dark concept is hovering around 0.75, which is nowhere near -1. We can also see that the similarity between bright and dark are very close to similarity of the unrelated pairings and below the similarity between hot and cold.
+
+Over layer 2 to 23, the mean cosine similarity of the baseline or unrelated concept pairings are 0.729. In every bootstrapped sample, the averaged hot-cold cosine similarity is above the averaged bright-dark cosine similarities as well as averaged baseline cosine similarities, with [0.098, 0.229] as the 95% interval of cosine difference between hot-cold and bright-dark and [0.140, 0.235] as the 95% interval of cosine difference between hot-cold and the unrelated baseline.
+
+second plot for bright-dark vs baseline
+
+We can see that when bright-dark cosine similarity is compared to the baseline by layer, it mostly hovers around the baseline. But, we can see that layer 2, 3, 22, 23 are noticeably above baseline for 95% of the bootstrapped samples, while layer 12 to 14 are noticeably below baseline.
+
+## 4. Interpretation
+
+yo why did you recommend me interpretation section.
+
+## 5. Limitations
+
+i forgot. fuck. there are some, i just can't really find it.
+
+## 6. Next Steps
+
+While writing this README, I noticed that one usual method to approximate the direction of a concept is by doing addition and subtraction from other concept vectors (e.g. king - male + female = queen). So, my next step will be to research whether two opposite concepts are really separated by a "negation" concept and whether that concept concludes the existence of a universal "negation" concept. I'm also thinking about observing on what happens to a model when some concept vectors are amplified to trigger more activations related to those concepts.
