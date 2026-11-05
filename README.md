@@ -2,7 +2,7 @@
 One common meaning of 'bright' is "filled with much light," while one common meaning of 'dark' is "being without light or without much light," so it seems that both have the opposite meaning. But, does a language model also encode the meaning this way by encoding the vectors in the opposite direction?
 
 ## 1. Setup
-I used Qwen2.5-0.5B-Instruct as the model for this experiment, with float32 as its activations' data type. The prompts used to extract the specific activation vectors are 40 matched sentences, each for the corresponding concept of 'bright', 'dark', neutral, 'hot', and 'cold'. Same subject per row; and the neutral set has boring properties such as size, material, and age as a concept set unrelated to brightness or temperature. The cleaned variant, which removes connotations and sun/winter cross-leaks, is the main prompt set; the original variant is used as a robustness check. All sentences are drafted with AI help and reviewed by hand.
+I used Qwen2.5-0.5B-Instruct as the model for this experiment, with float32 as its activations' data type. The prompts used to extract the specific activation vectors are 40 matched sentences, each for the corresponding concept of 'bright', 'dark', neutral, 'hot', and 'cold'. Same subject per row; and the neutral set has boring properties such as size, material, and age as a concept set unrelated to brightness or temperature. The cleaned variant, which removes connotations and sun/winter cross-leaks, is the main prompt set; the original variant is used as a robustness check.
 
 To formalize the question, two vectors are facing the opposite direction when their cosine similarity is close to -1. Thus, the goal of this small project is to determine whether the cosine similarities of 'bright' vector and 'dark' vector is close to -1. If not, the goal is to also compare the cosine similarity to other concepts with opposite meaning and unrelated meaning to assess how similar 'bright' and 'dark' are relative to what's considered as 'opposite' and 'unrelated'.
 
@@ -58,3 +58,7 @@ We can see that when bright-dark cosine similarity is compared to the baseline b
 ## 5. Next Steps
 
 While writing this README, I noticed that one usual method to approximate the direction of a concept is by doing addition and subtraction from other concept vectors (e.g. king - male + female = queen). So, my next step will be to research whether two opposite concepts are really separated by a "negation" concept and whether that concept concludes the existence of a universal "negation" concept. I'm also thinking about observing on what happens to a model when some concept vectors are amplified to trigger more activations related to those concepts.
+
+## 6. Usage of AI
+
+I used an AI assistant (Claude) throughout this project. It drafted most of the code and the prompt sentences, which I reviewed and edited, and it suggested several analysis methods (the unrelated baseline, the hot/cold control pair, bootstrap intervals, and split-half stability checks). The research question, hypotheses, decisions about which analyses to run and report, and the interpretation of the results are my own. I wrote this README myself, with feedback from the assistant.
