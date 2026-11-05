@@ -38,13 +38,13 @@ The analysis was also repeated over the original 40 sentences as well as the ori
 
 ## 3. Results
 
-pretend that the plot is here
+![Cosine similarity per layer](fig_cosine.png)
 
 We can see that from this plot that, the cosine similarity between bright concept and dark concept is hovering around 0.75, which is nowhere near -1. We can also see that the similarity between bright and dark are very close to similarity of the unrelated pairings and below the similarity between hot and cold.
 
 Over layer 2 to 23, the mean cosine similarity of the baseline or unrelated concept pairings are 0.729. In every bootstrapped sample, the averaged hot-cold cosine similarity is above the averaged bright-dark cosine similarities as well as averaged baseline cosine similarities, with [0.098, 0.229] as the 95% interval of cosine difference between hot-cold and bright-dark and [0.140, 0.235] as the 95% interval of cosine difference between hot-cold and the unrelated baseline.
 
-second plot for bright-dark vs baseline
+![Bright/dark minus baseline per layer](fig_alignment.png)
 
 We can see that when bright-dark cosine similarity is compared to the baseline by layer, it mostly hovers around the baseline. But, we can see that layer 2, 3, 22, 23 have the 95% interval of their difference entirely above 0, while layer 12 to 14 have the 95% interval of their difference entirely below 0.
 
