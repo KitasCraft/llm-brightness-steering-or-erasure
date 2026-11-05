@@ -24,7 +24,7 @@ For hot-cold curve compared with the other curves: First, I calculate the mean c
 
 For bright-dark curve compared with the baseline curve: Similar as the above, but instead of using the mean cosine similarity across layers, I keep each layer's cosine similarity and then plot the 95% bootstrap interval of the difference between bright-dark curve and baseline curve for each layer. Since negative differences can cancel an average, per-layer summary is better for this comparison as to observe how the difference changes per layer.
 
-The reason I use average instead of per-layer for hot-cold curve comparison is because most of the layers have hot-cold cosine similarity interval above both bright-dark and the baseline cosine similarity intervals (See Robustness and Sanity Checks section in the notebook for detail). Thus, the statistic of the average is much preferred as most layers have the same signs in terms of difference.
+The reason I use average instead of per-layer for hot-cold curve comparison is because most of the layers have hot-cold cosine and bright-dark cosine difference lower bound as above 0 (19 of 22 layers). Same thing can also be said between hot-cold cosine and the baseline cosine difference lower bound (22 of 22 layers) (See Robustness and Sanity Checks section in the notebook for detail). Thus, the statistic of the average is much preferred as most layers have the same signs in terms of difference.
 
 ### Layer Choice
 
@@ -34,7 +34,7 @@ Layer 1 is excluded from the calculation of the averages because layer 1's conce
 
 ### Robustness Checks
 
-The analysis was also repeated over the original 40 sentences as well as the original 21 sentences before the prompt set expansion. Split half stability was also measured to ensure a non-neutral concept set has roughly similar direction. The checks are detailed in the Robustness and Sanity Checks section in the notebook.
+The analysis was also repeated over the original 40 sentences as well as the original 21 sentences before the prompt set expansion. Split half stability was also measured to ensure the stability of a non-neutral concept set. The checks are detailed in the Robustness and Sanity Checks section in the notebook.
 
 ## 3. Results
 
@@ -46,16 +46,15 @@ Over layer 2 to 23, the mean cosine similarity of the baseline or unrelated conc
 
 second plot for bright-dark vs baseline
 
-We can see that when bright-dark cosine similarity is compared to the baseline by layer, it mostly hovers around the baseline. But, we can see that layer 2, 3, 22, 23 are noticeably above baseline for 95% of the bootstrapped samples, while layer 12 to 14 are noticeably below baseline.
+We can see that when bright-dark cosine similarity is compared to the baseline by layer, it mostly hovers around the baseline. But, we can see that layer 2, 3, 22, 23 have the 95% interval of their difference entirely above 0, while layer 12 to 14 have the 95% interval of their difference entirely below 0.
 
-## 4. Interpretation
+## 4. Limitations
 
-yo why did you recommend me interpretation section.
+- The model I picked is very small and the sentences I picked are only template sentences. It might not reflect results using other models or sentences.
+- There are only two pairs that reflect opposite concepts, so it's unclear whether bright-dark or hot-cold are the typical patterns. The baseline is also formed from only these four concepts so an actual baseline might have lower/higher mean cosine similarity.
+- The bright vector is the least stable. Its split-half is only 0.80 compared to about 0.9 for the others (See Robustness and Sanity Checks section in the notebook for detail). Its noise may lower bright-dark cosines somewhat.
+- A large shared "property" component dominates every cosine, which may hide finer structure.
 
-## 5. Limitations
-
-i forgot. fuck. there are some, i just can't really find it.
-
-## 6. Next Steps
+## 5. Next Steps
 
 While writing this README, I noticed that one usual method to approximate the direction of a concept is by doing addition and subtraction from other concept vectors (e.g. king - male + female = queen). So, my next step will be to research whether two opposite concepts are really separated by a "negation" concept and whether that concept concludes the existence of a universal "negation" concept. I'm also thinking about observing on what happens to a model when some concept vectors are amplified to trigger more activations related to those concepts.
